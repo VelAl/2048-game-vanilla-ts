@@ -21,11 +21,30 @@ body {
   min-height: 100vh;
 }
 
-#app {
-  max-width: 1280px;
+#game-container {
+  box-sizing: border-box;
+  width: 90%;
+  max-width: 420px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+}
+
+#game-board {
+  display: grid;
+  width: 90%;
+  aspect-ratio: 1;
+
+  margin: 0 auto;
+  /*grid-template-columns: repeat(gridSise, 1fr); */ /*set in initBoard function*/
+  /*grid-template-rows: repeat(gridSise, 1fr); */ /*set in initBoard function*/
+  gap: 2%;
+  background-color: #c1bbb3;
+  border-radius: 8px;
+}
+
+/* used for created cells in initBoard function */
+.cell {
+  background-color: #d8d1c0;
+  border-radius: 8px;
 }
 
 @media (prefers-color-scheme: light) {
