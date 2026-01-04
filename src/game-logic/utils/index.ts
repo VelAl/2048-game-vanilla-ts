@@ -1,5 +1,5 @@
-import { gameStatus } from '../../constants';
-import type { T_GameBoard, T_GameStatus } from '../../types';
+import { gameStatus, BOARD_SIZE } from '../../constants';
+import type { T_GameBoard, T_GameStatus, T_TileCoords } from '../../types';
 
 export * from './shift_and_merge_line';
 export * from './can_merge_any_tile';
@@ -10,22 +10,19 @@ export const generate_initial_tile_value = () => {
 };
 
 export const generate_id = () => {
-  const idPart1 = Math.floor(Math.random() * 100);
-  const idPart2 = Math.floor(Math.random() * 100);
-
-  const id = (idPart1.toString() + idPart2.toString()).slice(0, 7);
-
-  return Number(id);
+  const time = Date.now() % 1e6;
+  const rand = Math.floor(Math.random() * 1e3);
+  return time * 1e3 + rand;
 };
 
-export const generate_empty_board = (gridSize: 4 | 5 = 4): T_GameBoard => {
-  return new Array(gridSize)
+export const generate_empty_board = (): T_GameBoard => {
+  return new Array(BOARD_SIZE)
     .fill(null)
-    .map(() => new Array(gridSize).fill(null));
+    .map(() => new Array(BOARD_SIZE).fill(null));
 };
 
-export const get_empty_cells_coords = (board: T_GameBoard) => {
-  const emptyCells: { x: number; y: number }[] = [];
+export const get_empty_cells_coords = (board: T_GameBoard): T_TileCoords[] => {
+  const emptyCells: T_TileCoords[] = [];
 
   board.forEach((row, y) => {
     row.forEach((cell, x) => {

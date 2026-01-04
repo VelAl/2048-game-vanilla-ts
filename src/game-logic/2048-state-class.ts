@@ -22,13 +22,13 @@ export class Game2048State {
   #score: number = 0;
 
   constructor(initialState?: T_SavedBoard) {
-    this.#board = generate_empty_board((initialState?.length as 4 | 5) || 4);
+    this.#board = generate_empty_board();
 
     if (initialState) {
       initialState.forEach((row, y) => {
         row.forEach((value, x) => {
           if (value) {
-            this.#board[y][x] = new Tile(value);
+            this.#board[y][x] = new Tile({ y, x }, value);
           }
         });
       });
@@ -52,14 +52,7 @@ export class Game2048State {
 
     const randomIndex = Math.floor(Math.random() * emptyCells.length);
     const { x, y } = emptyCells[randomIndex];
-    this.#board[y][x] = new Tile();
-  }
-
-  #is_any_move_possible() {
-    const hasEmptyCells = get_empty_cells_coords(this.#board).length > 0;
-    if (hasEmptyCells) return true;
-
-    return can_merge_any_tile(this.#board as Tile[][]);
+    this.#board[y][x] = new Tile({ y, x });
   }
 
   make_move(direction: T_Direction) {
@@ -72,25 +65,47 @@ export class Game2048State {
 
     let anyTileMoved = false;
 
+    const tilesToRemoveAcc: Tile[] = [];
+
     lines_with_indexes.forEach((line) => {
+      // get board line depending on the direction____________________
       const boardLine = line.map(([y, x]) => this.#board[y][x]);
 
-      const { isShiftedOrMerged, newLine, scoreIncrement } =
+      const { isShiftedOrMerged, newLine, scoreIncrement, tilesToRemove } =
         shift_and_merge_line(boardLine);
 
       if (isShiftedOrMerged) {
         anyTileMoved = true;
         this.#score += scoreIncrement;
 
-        line.forEach(([y, x], i) => (this.#board[y][x] = newLine[i]));
+        tilesToRemove.forEach((tile) => {
+          tilesToRemoveAcc.push(tile);
+        });
+
+        // set the board line with the new values_____________________
+        line.forEach(([y, x], i) => {
+          const newCell = newLine[i];
+          if (newCell) {
+            newCell.coords = { y, x };
+          }
+          this.#board[y][x] = newCell;
+        });
       }
     });
 
     if (anyTileMoved) {
-      this.#set_new_tile;
+      this.#set_new_tile();
 
       this.#check_status();
+
+      return {
+        tilesToRemove: tilesToRemoveAcc,
+      };
     }
+
+    return {
+      tilesToRemove: tilesToRemoveAcc,
+    };
   }
 
   #check_status() {
@@ -99,10 +114,17 @@ export class Game2048State {
       return;
     }
 
-    if (!this.#is_any_move_possible()) {
+    if (!this.#is_any_move_possible) {
       this.#status = gameStatus.LOST;
       return;
     }
+  }
+
+  get #is_any_move_possible() {
+    const hasEmptyCells = get_empty_cells_coords(this.#board).length > 0;
+    if (hasEmptyCells) return true;
+
+    return can_merge_any_tile(this.#board as Tile[][]);
   }
 
   get gameState() {
@@ -111,5 +133,9 @@ export class Game2048State {
       status: this.#status,
       score: this.#score,
     };
+  }
+
+  get tiles() {
+    return this.#board.flat().filter((tile) => !!tile);
   }
 }
