@@ -25,7 +25,7 @@ export class Tile {
     this.#coordinates = coordinates;
   }
 
-  doubble() {
+  double() {
     const new_value = this.#value * 2;
 
     if (new_value > 2048) {

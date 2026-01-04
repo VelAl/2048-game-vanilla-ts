@@ -12,7 +12,7 @@ import {
   generate_empty_board,
   get_empty_cells_coords,
   get_line_indexes_by_direction,
-  is_move_borbidden,
+  is_move_forbidden,
   shift_and_merge_line,
 } from './utils';
 
@@ -56,7 +56,7 @@ export class Game2048State {
   }
 
   make_move(direction: T_Direction) {
-    if (is_move_borbidden(this.#status)) {
+    if (is_move_forbidden(this.#status)) {
       console.error('Tried to make move in lost or won state');
       return;
     }

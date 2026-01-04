@@ -35,7 +35,7 @@ export const shift_and_merge_line: T_ShiftAndMergeLine = (cellsLine) => {
 
     if (should_merge) {
       isMerged = true;
-      tile.doubble();
+      tile.double();
       scoreIncrement += tile.value;
 
       const tileToRemove = akk.at(-1)!;

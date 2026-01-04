@@ -38,5 +38,5 @@ export const get_empty_cells_coords = (board: T_GameBoard): T_TileCoords[] => {
 export const board_has_won_tile = (board: T_GameBoard) =>
   board.some((row) => row.some((cell) => cell?.value === 2048));
 
-export const is_move_borbidden = (status: T_GameStatus): boolean =>
+export const is_move_forbidden = (status: T_GameStatus): boolean =>
   status === gameStatus.LOST || status === gameStatus.WON;
