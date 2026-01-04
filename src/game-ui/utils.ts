@@ -1,11 +1,11 @@
-import type { T_CoordTuple, T_Direction } from '../types';
+import type { T_Direction } from '../types';
 import type { Tile } from '../game-logic/tile-class';
-import { directions, gridSize, tileColors } from '../constants';
+import { directions, BOARD_SIZE, tileColors } from '../constants';
 
-export const getTileComputedStyles = (tile: Tile, coord: T_CoordTuple) => {
-  const top = `${(coord[0] * 100) / gridSize}%`;
-  const left = `${(coord[1] * 100) / gridSize}%`;
-  const width = `${100 / gridSize}%`;
+export const getTileComputedStyles = (tile: Tile) => {
+  const top = `${(tile.coords.y * 100) / BOARD_SIZE}%`;
+  const left = `${(tile.coords.x * 100) / BOARD_SIZE}%`;
+  const width = `${100 / BOARD_SIZE}%`;
 
   const { backgroundColor, color } = tileColors[tile.value];
 
@@ -20,13 +20,10 @@ export const getTileComputedStyles = (tile: Tile, coord: T_CoordTuple) => {
 
 export const applyTileComputedStyles = (
   container: HTMLDivElement,
-  tile: Tile,
-  coord: T_CoordTuple
+  tile: Tile
 ) => {
-  const { top, left, width, backgroundColor, color } = getTileComputedStyles(
-    tile,
-    coord
-  );
+  const { top, left, width, backgroundColor, color } =
+    getTileComputedStyles(tile);
 
   container.style.top = top;
   container.style.left = left;
@@ -39,6 +36,5 @@ export const applyTileComputedStyles = (
   tileElement.style.color = color;
 };
 
-export const isArrowBtnKey = (key: string): key is T_Direction => {
-  return Object.values(directions).includes(key as T_Direction);
-};
+export const isArrowBtnKey = (key: string): key is T_Direction =>
+  Object.values(directions).includes(key as T_Direction);

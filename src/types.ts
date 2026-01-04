@@ -14,4 +14,4 @@ export type T_GameBoard = T_BoardLine[];
 
 export type T_SavedBoard = (null | Tile['value'])[][];
 
-export type T_CoordTuple = [number, number];
+export type T_TileCoords = { y: number; x: number };

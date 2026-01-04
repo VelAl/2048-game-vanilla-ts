@@ -1,4 +1,4 @@
-export const gridSize = 4;
+export const BOARD_SIZE = 4;
 
 export const gameStatus = {
   IDLE: 'idle',
@@ -15,15 +15,15 @@ export const directions = {
 } as const;
 
 export const tileColors = {
-  2: { backgroundColor: '#eee4da', color: '#776e65' },
-  4: { backgroundColor: '#ede0c8', color: '#776e65' },
-  8: { backgroundColor: '#f2b179', color: '#f9f6f2' },
-  16: { backgroundColor: '#f59563', color: '#f9f6f2' },
-  32: { backgroundColor: '#f67c5f', color: '#f9f6f2' },
-  64: { backgroundColor: '#f65e3b', color: '#f9f6f2' },
-  128: { backgroundColor: '#edcf72', color: '#f9f6f2' },
-  256: { backgroundColor: '#edcc61', color: '#f9f6f2' },
-  512: { backgroundColor: '#edc850', color: '#f9f6f2' },
-  1024: { backgroundColor: '#edc53f', color: '#f9f6f2' },
-  2048: { backgroundColor: '#edc22e', color: '#f9f6f2' },
+  2: { backgroundColor: '#e6dccf', color: '#6f665e' },
+  4: { backgroundColor: '#e3d1b3', color: '#6f665e' },
+  8: { backgroundColor: '#f0a85c', color: '#ffffff' },
+  16: { backgroundColor: '#f28c45', color: '#ffffff' },
+  32: { backgroundColor: '#f26d4f', color: '#ffffff' },
+  64: { backgroundColor: '#f04f2a', color: '#ffffff' },
+  128: { backgroundColor: '#e6c65c', color: '#ffffff' },
+  256: { backgroundColor: '#e3bf47', color: '#ffffff' },
+  512: { backgroundColor: '#e0b832', color: '#ffffff' },
+  1024: { backgroundColor: '#ddb020', color: '#ffffff' },
+  2048: { backgroundColor: '#d9a600', color: '#ffffff' },
 };

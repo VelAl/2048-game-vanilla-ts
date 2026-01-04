@@ -28,7 +28,7 @@ export class Game2048State {
       initialState.forEach((row, y) => {
         row.forEach((value, x) => {
           if (value) {
-            this.#board[y][x] = new Tile(value);
+            this.#board[y][x] = new Tile({ y, x }, value);
           }
         });
       });
@@ -52,7 +52,7 @@ export class Game2048State {
 
     const randomIndex = Math.floor(Math.random() * emptyCells.length);
     const { x, y } = emptyCells[randomIndex];
-    this.#board[y][x] = new Tile();
+    this.#board[y][x] = new Tile({ y, x });
   }
 
   make_move(direction: T_Direction) {
@@ -65,7 +65,7 @@ export class Game2048State {
 
     let anyTileMoved = false;
 
-    const tilesToremoveAcc: Tile[] = [];
+    const tilesToRemoveAcc: Tile[] = [];
 
     lines_with_indexes.forEach((line) => {
       // get board line depending on the direction____________________
@@ -79,11 +79,17 @@ export class Game2048State {
         this.#score += scoreIncrement;
 
         tilesToRemove.forEach((tile) => {
-          tilesToremoveAcc.push(tile);
+          tilesToRemoveAcc.push(tile);
         });
 
         // set the board line with the new values_____________________
-        line.forEach(([y, x], i) => (this.#board[y][x] = newLine[i]));
+        line.forEach(([y, x], i) => {
+          const newCell = newLine[i];
+          if (newCell) {
+            newCell.coords = { y, x };
+          }
+          this.#board[y][x] = newCell;
+        });
       }
     });
 
@@ -93,12 +99,12 @@ export class Game2048State {
       this.#check_status();
 
       return {
-        tilesToRemove: tilesToremoveAcc,
+        tilesToRemove: tilesToRemoveAcc,
       };
     }
 
     return {
-      tilesToRemove: tilesToremoveAcc,
+      tilesToRemove: tilesToRemoveAcc,
     };
   }
 
@@ -127,5 +133,9 @@ export class Game2048State {
       status: this.#status,
       score: this.#score,
     };
+  }
+
+  get tiles() {
+    return this.#board.flat().filter((tile) => !!tile);
   }
 }

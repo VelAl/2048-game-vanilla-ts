@@ -1,68 +1,52 @@
 import { Game2048State } from './game-logic';
-import { initBoard, createTile } from './game-ui';
-import { applyTileComputedStyles, isArrowBtnKey } from './game-ui/utils';
+import type { Tile } from './game-logic/tile-class';
+import {
+  initBoard,
+  createTile,
+  removeTileUi,
+  applyTileComputedStyles,
+  isArrowBtnKey,
+} from './game-ui';
 
 const initGame = () => {
   const boardElement = initBoard();
-  let tileElements = new Map<number, HTMLDivElement>();
+  let htmlTiles = new Map<number, HTMLDivElement>();
 
   const game = new Game2048State();
-  const { board } = game.gameState;
 
-  board.forEach((row, y) => {
-    row.forEach((tile, x) => {
-      if (tile) {
-        const tileElement = createTile(tile, [y, x]);
+  const setTileOnBoard = (tile: Tile) => {
+    const tileElement = createTile(tile);
+    htmlTiles.set(tile.id, tileElement);
+    boardElement.appendChild(tileElement);
+  };
 
-        tileElements.set(tile.id, tileElement);
-
-        boardElement.appendChild(tileElement);
-      }
-    });
-  });
+  game.tiles.forEach(setTileOnBoard);
 
   document.addEventListener('keydown', (event) => {
-    if (!isArrowBtnKey(event.key)) {
-      return;
-    }
+    if (!isArrowBtnKey(event.key)) return;
 
-    const isMoved = game.make_move(event.key);
+    const result = game.make_move(event.key);
 
-    if (!isMoved) {
-      return;
-    }
+    if (!result) return;
 
-    const tilesToRemove = Array.from(tileElements.keys()).filter(
-      (tileId) => !board.some((row) => row.some((tile) => tile?.id === tileId))
-    );
+    const { tilesToRemove } = result;
 
-    tilesToRemove.forEach((tileId) => {
-      const tileElement = tileElements.get(tileId);
-      if (tileElement) {
-        tileElements.delete(tileId);
+    tilesToRemove.forEach((tile) => {
+      const tileElement = htmlTiles.get(tile.id)!;
 
-        tileElement.style.zIndex = '0';
+      htmlTiles.delete(tile.id);
 
-        setTimeout(() => {
-          tileElement.remove();
-        }, 300);
-      }
+      removeTileUi(tileElement, tile);
     });
 
-    board.forEach((row, y) => {
-      row.forEach((tile, x) => {
-        if (tile) {
-          if (tileElements.has(tile.id)) {
-            const tileElement = tileElements.get(tile.id);
+    game.tiles.forEach((tile) => {
+      const htmlTileElement = htmlTiles.get(tile.id);
 
-            applyTileComputedStyles(tileElement!, tile, [y, x]);
-          } else {
-            const tileElement = createTile(tile, [y, x]);
-            tileElements.set(tile.id, tileElement);
-            boardElement.appendChild(tileElement);
-          }
-        }
-      });
+      if (htmlTileElement) {
+        applyTileComputedStyles(htmlTileElement, tile);
+      } else {
+        setTileOnBoard(tile);
+      }
     });
   });
 };

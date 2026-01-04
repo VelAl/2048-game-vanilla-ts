@@ -1,8 +1,7 @@
 import type { Tile } from '../game-logic/tile-class';
-import type { T_CoordTuple } from '../types';
 import { applyTileComputedStyles } from './utils';
 
-export const createTile = (tile: Tile, coord: T_CoordTuple): HTMLDivElement => {
+export const createTile = (tile: Tile): HTMLDivElement => {
   const tileWrapperElement = document.createElement('div');
   tileWrapperElement.classList.add('tile');
 
@@ -12,7 +11,7 @@ export const createTile = (tile: Tile, coord: T_CoordTuple): HTMLDivElement => {
 
   tileWrapperElement.appendChild(tileElement);
 
-  applyTileComputedStyles(tileWrapperElement, tile, coord);
+  applyTileComputedStyles(tileWrapperElement, tile);
 
   return tileWrapperElement;
 };
