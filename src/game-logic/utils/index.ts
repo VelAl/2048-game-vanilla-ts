@@ -1,4 +1,4 @@
-import { gameStatus } from '../../constants';
+import { gameStatus, gridSize } from '../../constants';
 import type { T_GameBoard, T_GameStatus } from '../../types';
 
 export * from './shift_and_merge_line';
@@ -18,7 +18,7 @@ export const generate_id = () => {
   return Number(id);
 };
 
-export const generate_empty_board = (gridSize: 4 | 5 = 4): T_GameBoard => {
+export const generate_empty_board = (): T_GameBoard => {
   return new Array(gridSize)
     .fill(null)
     .map(() => new Array(gridSize).fill(null));

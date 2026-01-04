@@ -6,10 +6,12 @@ export type T_GameStatus = (typeof gameStatus)[keyof typeof gameStatus];
 export type T_Direction = (typeof directions)[keyof typeof directions];
 
 /**
- * Represents a vertical or horizontal line of the T_GameBoard
+ * Represents a vertical or horizontal line of the T_GameBoard type
  */
 export type T_BoardLine = (null | Tile)[];
 
 export type T_GameBoard = T_BoardLine[];
 
 export type T_SavedBoard = (null | Tile['value'])[][];
+
+export type T_CoordTuple = [number, number];

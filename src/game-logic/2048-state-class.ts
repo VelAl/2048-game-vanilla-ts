@@ -22,7 +22,7 @@ export class Game2048State {
   #score: number = 0;
 
   constructor(initialState?: T_SavedBoard) {
-    this.#board = generate_empty_board((initialState?.length as 4 | 5) || 4);
+    this.#board = generate_empty_board();
 
     if (initialState) {
       initialState.forEach((row, y) => {
@@ -55,13 +55,6 @@ export class Game2048State {
     this.#board[y][x] = new Tile();
   }
 
-  #is_any_move_possible() {
-    const hasEmptyCells = get_empty_cells_coords(this.#board).length > 0;
-    if (hasEmptyCells) return true;
-
-    return can_merge_any_tile(this.#board as Tile[][]);
-  }
-
   make_move(direction: T_Direction) {
     if (is_move_borbidden(this.#status)) {
       console.error('Tried to make move in lost or won state');
@@ -72,25 +65,41 @@ export class Game2048State {
 
     let anyTileMoved = false;
 
+    const tilesToremoveAcc: Tile[] = [];
+
     lines_with_indexes.forEach((line) => {
+      // get board line depending on the direction____________________
       const boardLine = line.map(([y, x]) => this.#board[y][x]);
 
-      const { isShiftedOrMerged, newLine, scoreIncrement } =
+      const { isShiftedOrMerged, newLine, scoreIncrement, tilesToRemove } =
         shift_and_merge_line(boardLine);
 
       if (isShiftedOrMerged) {
         anyTileMoved = true;
         this.#score += scoreIncrement;
 
+        tilesToRemove.forEach((tile) => {
+          tilesToremoveAcc.push(tile);
+        });
+
+        // set the board line with the new values_____________________
         line.forEach(([y, x], i) => (this.#board[y][x] = newLine[i]));
       }
     });
 
     if (anyTileMoved) {
-      this.#set_new_tile;
+      this.#set_new_tile();
 
       this.#check_status();
+
+      return {
+        tilesToRemove: tilesToremoveAcc,
+      };
     }
+
+    return {
+      tilesToRemove: tilesToremoveAcc,
+    };
   }
 
   #check_status() {
@@ -99,10 +108,17 @@ export class Game2048State {
       return;
     }
 
-    if (!this.#is_any_move_possible()) {
+    if (!this.#is_any_move_possible) {
       this.#status = gameStatus.LOST;
       return;
     }
+  }
+
+  get #is_any_move_possible() {
+    const hasEmptyCells = get_empty_cells_coords(this.#board).length > 0;
+    if (hasEmptyCells) return true;
+
+    return can_merge_any_tile(this.#board as Tile[][]);
   }
 
   get gameState() {
