@@ -1,6 +1,6 @@
-import { BOARD_SIZE } from '../constants';
+import { BOARD_SIZE } from '../../../constants';
 
-export const initBoard = () => {
+export const initBoardUi = () => {
   const gameBoard = document.getElementById('game-board');
 
   if (!gameBoard) {

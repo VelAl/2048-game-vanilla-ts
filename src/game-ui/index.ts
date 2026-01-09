@@ -1,5 +1,3 @@
-export * from './init-board-ui';
-export * from './create-tile-ui';
+export * from './board-ui-handler';
 export * from './utils';
-export * from './remove-tile-ui';
 export * from './score-ui-handler';

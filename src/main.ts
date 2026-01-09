@@ -1,32 +1,17 @@
 import { Game2048State } from './game-logic';
-import type { Tile } from './game-logic/tile-class';
-import {
-  initBoard,
-  createTile,
-  removeTileUi,
-  applyTileComputedStyles,
-  isArrowBtnKey,
-  ScoreUiHandler,
-} from './game-ui';
+import { isArrowBtnKey, ScoreUiHandler } from './game-ui';
+import { BoardUiHandler } from './game-ui/board-ui-handler/board-ui-handler';
 import { LS_GameStateManager } from './local-storage-manager';
 
 const initGame = () => {
   const scoreUiHandler = new ScoreUiHandler();
-  const boardElement = initBoard();
-
-  let htmlTiles = new Map<number, HTMLDivElement>();
+  const boardUiHandler = new BoardUiHandler();
 
   const lsGameStateManager = new LS_GameStateManager();
   const game = new Game2048State(lsGameStateManager.savedState);
-  scoreUiHandler.setUiScrores(game.gameState);
 
-  const setTileOnBoard = (tile: Tile) => {
-    const tileElement = createTile(tile);
-    htmlTiles.set(tile.id, tileElement);
-    boardElement.appendChild(tileElement);
-  };
-
-  game.tiles.forEach(setTileOnBoard);
+  scoreUiHandler.setUiScores(game.gameState);
+  boardUiHandler.setTilesOnBoard(game.tiles);
 
   document.addEventListener('keydown', (event) => {
     if (!isArrowBtnKey(event.key)) return;
@@ -36,27 +21,12 @@ const initGame = () => {
     if (!result) return;
 
     lsGameStateManager.saveState(game.gameState);
-    scoreUiHandler.setUiScrores(game.gameState);
+    scoreUiHandler.setUiScores(game.gameState);
 
     const { tilesToRemove } = result;
 
-    tilesToRemove.forEach((tile) => {
-      const tileElement = htmlTiles.get(tile.id)!;
-
-      htmlTiles.delete(tile.id);
-
-      removeTileUi(tileElement, tile);
-    });
-
-    game.tiles.forEach((tile) => {
-      const htmlTileElement = htmlTiles.get(tile.id);
-
-      if (htmlTileElement) {
-        applyTileComputedStyles(htmlTileElement, tile);
-      } else {
-        setTileOnBoard(tile);
-      }
-    });
+    boardUiHandler.removeTilesFromBoard(tilesToRemove);
+    boardUiHandler.setTilesOnBoard(game.tiles);
   });
 };
 

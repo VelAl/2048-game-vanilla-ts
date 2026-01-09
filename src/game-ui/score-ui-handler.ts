@@ -11,7 +11,7 @@ export class ScoreUiHandler {
       scoreboardElement.querySelector('#best-score-value')!;
   }
 
-  setUiScrores({ score, bestScore }: { score: number; bestScore: number }) {
+  setUiScores({ score, bestScore }: { score: number; bestScore: number }) {
     this.#scoreElement.textContent = score.toString();
     this.#bestScoreElement.textContent = bestScore.toString();
   }

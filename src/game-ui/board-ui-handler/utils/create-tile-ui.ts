@@ -1,7 +1,7 @@
-import type { Tile } from '../game-logic/tile-class';
-import { applyTileComputedStyles } from './utils';
+import type { Tile } from '../../../game-logic/tile-class';
+import { applyTileComputedStyles } from './upply-tile-computed-styles';
 
-export const createTile = (tile: Tile): HTMLDivElement => {
+export const createTileUi = (tile: Tile): HTMLDivElement => {
   const tileWrapperElement = document.createElement('div');
   tileWrapperElement.classList.add('tile');
 
