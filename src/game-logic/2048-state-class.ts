@@ -2,8 +2,8 @@ import { gameStatus } from '../constants';
 import {
   type T_GameStatus,
   type T_GameBoard,
-  type T_SavedBoard,
   type T_Direction,
+  type T_LS_State,
 } from '../types';
 import { Tile } from './tile-class';
 import {
@@ -20,18 +20,22 @@ export class Game2048State {
   #board: T_GameBoard;
   #status: T_GameStatus = gameStatus.IDLE;
   #score: number = 0;
+  #bestScore: number = 0;
 
-  constructor(initialState?: T_SavedBoard) {
+  constructor(initialState?: T_LS_State) {
     this.#board = generate_empty_board();
 
     if (initialState) {
-      initialState.forEach((row, y) => {
+      initialState.board.forEach((row, y) => {
         row.forEach((value, x) => {
           if (value) {
             this.#board[y][x] = new Tile({ y, x }, value);
           }
         });
       });
+
+      this.#score = initialState.score;
+      this.#bestScore = initialState.bestScore;
 
       this.#check_status();
     } else {
@@ -76,7 +80,7 @@ export class Game2048State {
 
       if (isShiftedOrMerged) {
         anyTileMoved = true;
-        this.#score += scoreIncrement;
+        this.#addScore(scoreIncrement);
 
         tilesToRemove.forEach((tile) => {
           tilesToRemoveAcc.push(tile);
@@ -102,10 +106,6 @@ export class Game2048State {
         tilesToRemove: tilesToRemoveAcc,
       };
     }
-
-    return {
-      tilesToRemove: tilesToRemoveAcc,
-    };
   }
 
   #check_status() {
@@ -127,11 +127,19 @@ export class Game2048State {
     return can_merge_any_tile(this.#board as Tile[][]);
   }
 
+  #addScore(increment: number) {
+    this.#score += increment;
+    if (this.#score > this.#bestScore) {
+      this.#bestScore = this.#score;
+    }
+  }
+
   get gameState() {
     return {
       board: this.#board,
       status: this.#status,
       score: this.#score,
+      bestScore: this.#bestScore,
     };
   }
 

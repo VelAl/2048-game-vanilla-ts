@@ -27,3 +27,5 @@ export const tileColors = {
   1024: { backgroundColor: '#ddb020', color: '#ffffff' },
   2048: { backgroundColor: '#d9a600', color: '#ffffff' },
 };
+
+export const LS_KEY_GAME_STATE = '2048-classic-game-state';

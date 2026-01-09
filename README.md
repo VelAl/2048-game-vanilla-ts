@@ -15,9 +15,8 @@ Built for fun: a classic 2048 puzzle that runs in the browser with a vanilla Typ
 
 ## Tasks to implement
 - [ ] Set proper game status handling and displaying
-- [ ] Set score handling
 - [ ] Set undo last move handling
-- [ ] Set logic for persisting game state in local storage
 - [ ] Set responsive CSS to match the user system theme
 - [ ] Set tests
+- [ ] Set Throttling for move
 
