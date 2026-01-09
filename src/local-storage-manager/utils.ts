@@ -24,9 +24,8 @@ export const validate_saved_state = (
 };
 
 /**
- * Converts a game class logic T_GameBoard to a T_SavedBoard for localStorage
+ * Converts a game board T_GameBoard to a T_SavedBoard for localStorage
  */
 export const convert_game_board_to_ls_board = (
   board: T_GameBoard
-): T_SavedBoard =>
-  board.map((row) => row.map((cell) => (cell ? cell.value : null)));
+): T_SavedBoard => board.map((row) => row.map((cell) => cell?.value || null));
