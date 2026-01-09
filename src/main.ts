@@ -6,14 +6,19 @@ import {
   removeTileUi,
   applyTileComputedStyles,
   isArrowBtnKey,
+  ScoreUiHandler,
 } from './game-ui';
+import { LS_GameStateManager } from './local-storage-manager';
 
 const initGame = () => {
+  const scoreUiHandler = new ScoreUiHandler();
   const boardElement = initBoard();
 
   let htmlTiles = new Map<number, HTMLDivElement>();
 
-  const game = new Game2048State();
+  const lsGameStateManager = new LS_GameStateManager();
+  const game = new Game2048State(lsGameStateManager.savedState);
+  scoreUiHandler.setUiScrores(game.gameState);
 
   const setTileOnBoard = (tile: Tile) => {
     const tileElement = createTile(tile);
@@ -29,6 +34,9 @@ const initGame = () => {
     const result = game.make_move(event.key);
 
     if (!result) return;
+
+    lsGameStateManager.saveState(game.gameState);
+    scoreUiHandler.setUiScrores(game.gameState);
 
     const { tilesToRemove } = result;
 
