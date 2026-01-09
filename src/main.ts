@@ -10,6 +10,7 @@ import {
 
 const initGame = () => {
   const boardElement = initBoard();
+
   let htmlTiles = new Map<number, HTMLDivElement>();
 
   const game = new Game2048State();

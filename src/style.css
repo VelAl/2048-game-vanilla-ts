@@ -30,6 +30,40 @@ body {
   margin: 0 auto;
 }
 
+#scoreboard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  margin: 0 auto 12px;
+  gap: 10px;
+}
+
+.score-card {
+  flex: 1;
+  background-color: #bbada0;
+  color: #f8f5f0;
+  border-radius: 8px;
+  padding: 10px 8px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.score-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.score-value {
+  display: block;
+  margin-top: 4px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
 #game-board {
   position: relative;
   display: grid;
@@ -42,6 +76,33 @@ body {
   gap: 2%;
   background-color: #c1bbb3;
   border-radius: 8px;
+}
+
+#restart-container {
+  width: 90%;
+  margin: 12px auto 0;
+}
+
+#restart-button {
+  width: 100%;
+  padding: 10px 0;
+  background-color: #8f7a66;
+  color: #f8f5f0;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+#restart-button:hover {
+  background-color: #7a6757;
+}
+
+#restart-button:active {
+  transform: translateY(1px);
 }
 
 /* used for created cells in initBoard function */

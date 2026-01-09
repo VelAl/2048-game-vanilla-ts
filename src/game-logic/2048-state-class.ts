@@ -102,10 +102,6 @@ export class Game2048State {
         tilesToRemove: tilesToRemoveAcc,
       };
     }
-
-    return {
-      tilesToRemove: tilesToRemoveAcc,
-    };
   }
 
   #check_status() {
