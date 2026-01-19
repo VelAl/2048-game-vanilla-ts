@@ -39,11 +39,18 @@ export class Game2048State {
 
       this.#check_status();
     } else {
-      this.#set_new_tile();
-      this.#set_new_tile();
-
-      this.#status = gameStatus.PLAYING;
+      this.startNewGame();
     }
+  }
+
+  startNewGame() {
+    this.#board = generate_empty_board();
+    this.#score = 0;
+
+    this.#status = gameStatus.PLAYING;
+
+    this.#set_new_tile();
+    this.#set_new_tile();
   }
 
   #set_new_tile() {
@@ -59,12 +66,14 @@ export class Game2048State {
     this.#board[y][x] = new Tile({ y, x });
   }
 
-  make_move(direction: T_Direction) {
-    if (is_move_forbidden(this.#status)) {
-      console.error('Tried to make move in lost or won state');
-      return;
-    }
-
+  /**
+   * Makes a move in the specified direction.
+   * @param direction - The direction to move in. Type: `T_Direction`.
+   * @returns An object containing an array of tiles to remove (which may be empty)
+   *  if a move has occurred (i.e. tiles were shifted or merged),
+   *  or `undefined` if no move was made.
+   */
+  make_move(direction: T_Direction): { tilesToRemove: Tile[] } | undefined {
     const lines_with_indexes = get_line_indexes_by_direction(direction);
 
     let anyTileMoved = false;

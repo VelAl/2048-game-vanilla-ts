@@ -21,6 +21,10 @@ export class BoardUiHandler {
     this.#boardElement.appendChild(tileElement);
   }
 
+  /**
+   * Places tiles on the board if they're not already there, or updates their styles if they are.
+   * @param tiles - an array of `Tile` objects to add or update on the board
+   */
   setTilesOnBoard(tiles: Tile[]) {
     tiles.forEach((tile) => {
       const htmlTileElement = this.#htmlTiles.get(tile.id);
@@ -41,5 +45,12 @@ export class BoardUiHandler {
 
       removeTileUi(tileElement, tile);
     });
+  }
+
+  clearBoard() {
+    this.#htmlTiles.forEach((tileElement) => {
+      tileElement.remove();
+    });
+    this.#htmlTiles.clear();
   }
 }

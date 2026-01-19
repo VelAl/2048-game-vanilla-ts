@@ -75,7 +75,7 @@ body {
   /*grid-template-rows: repeat(gridSise, 1fr); */ /*set in initBoard function*/
   gap: 2%;
   background-color: #c1bbb3;
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
 #restart-container {
@@ -139,6 +139,7 @@ body {
   /*color: ; /* set in createTile function */
   /*background-color: ; /* set in createTile function */
 
+  /* animation duration should be the same as the movement throttle delay. MOVEMENT_DURATION constant */
   transition: all 0.3s ease-in;
   animation: tile_appearance 0.3s ease-in;
 }

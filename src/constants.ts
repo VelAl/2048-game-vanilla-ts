@@ -1,5 +1,10 @@
 export const BOARD_SIZE = 4;
 
+/**
+ * milliseconds
+ */
+export const MOVEMENT_DURATION = 300;
+
 export const gameStatus = {
   IDLE: 'idle',
   PLAYING: 'playing',

@@ -1,6 +1,11 @@
+import { MOVEMENT_DURATION } from './constants';
 import { Game2048State } from './game-logic';
-import { isArrowBtnKey, ScoreUiHandler } from './game-ui';
-import { BoardUiHandler } from './game-ui/board-ui-handler/board-ui-handler';
+import {
+  isArrowBtnKey,
+  ScoreUiHandler,
+  BoardUiHandler,
+  throttle,
+} from './game-ui';
 import { LS_GameStateManager } from './local-storage-manager';
 
 const initGame = () => {
@@ -13,10 +18,10 @@ const initGame = () => {
   scoreUiHandler.setUiScores(game.gameState);
   boardUiHandler.setTilesOnBoard(game.tiles);
 
-  document.addEventListener('keydown', (event) => {
-    if (!isArrowBtnKey(event.key)) return;
+  const moveHandler = ({ key }: KeyboardEvent) => {
+    if (!isArrowBtnKey(key)) return;
 
-    const result = game.make_move(event.key);
+    const result = game.make_move(key);
 
     if (!result) return;
 
@@ -27,7 +32,21 @@ const initGame = () => {
 
     boardUiHandler.removeTilesFromBoard(tilesToRemove);
     boardUiHandler.setTilesOnBoard(game.tiles);
-  });
+  };
+
+  const throttledMoveHandler = throttle(moveHandler, MOVEMENT_DURATION);
+
+  document.addEventListener('keydown', throttledMoveHandler);
+
+  const restartGame = () => {
+    game.startNewGame();
+    boardUiHandler.clearBoard();
+    boardUiHandler.setTilesOnBoard(game.tiles);
+    scoreUiHandler.setUiScores(game.gameState);
+  };
+
+  const startBtn = document.getElementById('restart-button')!;
+  startBtn.addEventListener('click', restartGame);
 };
 
 initGame();
