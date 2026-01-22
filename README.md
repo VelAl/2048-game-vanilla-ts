@@ -17,9 +17,9 @@ Built for fun: a classic 2048 puzzle that runs in the browser with a vanilla Typ
 
 ## Screenshots
 
-- Classic board state: ![2048 board](public/2048_game_screenshot.png)
-- Winning moment: ![2048 win](public/2048_game_win_screenshot.png)
-- Game over view: ![2048 game over](public/2048_game_over_screenshot.png)
+![2048 board](public/2048_game_screenshot.png)
+![2048 win](public/2048_game_win_screenshot.png)
+![2048 game over](public/2048_game_over_screenshot.png)
 
 ## Tasks to implement
 
