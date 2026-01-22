@@ -28,6 +28,56 @@ body {
   width: 90%;
   max-width: 420px;
   margin: 0 auto;
+  position: relative;
+  padding-top: 56px; /* keep layout stable when banner toggles */
+}
+
+#banner {
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  width: 90%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background-color: #eee4da;
+  color: #776e65;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  pointer-events: none;
+}
+
+#banner.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+#banner.is-win {
+  background-color: #fde68a;
+  color: #7a5a0f;
+}
+
+#banner.is-lost {
+  background-color: #eee4da;
+  color: #776e65;
+}
+
+.banner-title {
+  display: block;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.banner-subtitle {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0.9;
 }
 
 #scoreboard {

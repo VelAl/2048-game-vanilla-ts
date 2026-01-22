@@ -2,6 +2,7 @@ import { MOVEMENT_DURATION } from './constants';
 import { Game2048State } from './game-logic';
 import {
   isArrowBtnKey,
+  BannerUiHandler,
   ScoreUiHandler,
   BoardUiHandler,
   throttle,
@@ -9,6 +10,7 @@ import {
 import { LS_GameStateManager } from './local-storage-manager';
 
 const initGame = () => {
+  const bannerUiHandler = new BannerUiHandler();
   const scoreUiHandler = new ScoreUiHandler();
   const boardUiHandler = new BoardUiHandler();
 
@@ -17,6 +19,7 @@ const initGame = () => {
 
   scoreUiHandler.setUiScores(game.gameState);
   boardUiHandler.setTilesOnBoard(game.tiles);
+  bannerUiHandler.updateBanner(game.gameState.status);
 
   const moveHandler = ({ key }: KeyboardEvent) => {
     if (!isArrowBtnKey(key)) return;
@@ -27,6 +30,7 @@ const initGame = () => {
 
     lsGameStateManager.saveState(game.gameState);
     scoreUiHandler.setUiScores(game.gameState);
+    bannerUiHandler.updateBanner(game.gameState.status);
 
     const { tilesToRemove } = result;
 
@@ -40,6 +44,8 @@ const initGame = () => {
 
   const restartGame = () => {
     game.startNewGame();
+    lsGameStateManager.saveState(game.gameState);
+    bannerUiHandler.updateBanner(game.gameState.status);
     boardUiHandler.clearBoard();
     boardUiHandler.setTilesOnBoard(game.tiles);
     scoreUiHandler.setUiScores(game.gameState);

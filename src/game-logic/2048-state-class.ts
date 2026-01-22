@@ -12,7 +12,6 @@ import {
   generate_empty_board,
   get_empty_cells_coords,
   get_line_indexes_by_direction,
-  is_move_forbidden,
   shift_and_merge_line,
 } from './utils';
 
