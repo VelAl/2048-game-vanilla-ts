@@ -15,9 +15,13 @@ Built for fun: a classic 2048 puzzle that runs in the browser with a vanilla Typ
 - Build for production: `npm run build`
 - Preview the production build: `npm run preview`
 
+## Screenshots
+
+- Classic board state: ![2048 board](public/2048_game_screenshot.png)
+- Winning moment: ![2048 win](public/2048_game_win_screenshot.png)
+- Game over view: ![2048 game over](public/2048_game_over_screenshot.png)
+
 ## Tasks to implement
 
-- [ ] Set proper game status handling and displaying
-- [ ] Set undo last move handling
 - [ ] Set responsive CSS to match the user system theme
 - [ ] Set tests
