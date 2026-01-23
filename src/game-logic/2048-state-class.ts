@@ -12,6 +12,7 @@ import {
   generate_empty_board,
   get_empty_cells_coords,
   get_line_indexes_by_direction,
+  get_random_el_in_array,
   shift_and_merge_line,
 } from './utils';
 
@@ -60,8 +61,7 @@ export class Game2048State {
       return;
     }
 
-    const randomIndex = Math.floor(Math.random() * emptyCells.length);
-    const { x, y } = emptyCells[randomIndex];
+    const { x, y } = get_random_el_in_array(emptyCells);
     this.#board[y][x] = new Tile({ y, x });
   }
 
@@ -90,9 +90,7 @@ export class Game2048State {
         anyTileMoved = true;
         this.#addScore(scoreIncrement);
 
-        tilesToRemove.forEach((tile) => {
-          tilesToRemoveAcc.push(tile);
-        });
+        tilesToRemove.forEach((tile) => tilesToRemoveAcc.push(tile));
 
         // set the board line with the new values_____________________
         line.forEach(([y, x], i) => {

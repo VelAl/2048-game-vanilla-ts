@@ -37,3 +37,8 @@ export const get_empty_cells_coords = (board: T_GameBoard): T_TileCoords[] => {
 
 export const board_has_won_tile = (board: T_GameBoard) =>
   board.some((row) => row.some((cell) => cell?.value === 2048));
+
+export const get_random_el_in_array = <T>(array: T[]): T => {
+  const randomIndex = Math.floor(Math.random() * array.length); // 0 - array.length - 1
+  return array[randomIndex];
+};

@@ -1,10 +1,9 @@
 import type { T_TileCoords } from '../types';
 import { generate_initial_tile_value, generate_id } from './utils';
 
-type T_TileValue = 2 | 4 | 8 | 16 | 32 | 64 | 128 | 256 | 512 | 1024 | 2048;
 export class Tile {
   #id: number;
-  #value: T_TileValue;
+  #value: number;
 
   /**
    * Movement returns removed tiles,
@@ -19,20 +18,14 @@ export class Tile {
    */
   mergedInTile: Tile | null = null;
 
-  constructor(coordinates: T_TileCoords, value?: T_TileValue) {
+  constructor(coordinates: T_TileCoords, value?: number) {
     this.#id = generate_id();
     this.#value = value || generate_initial_tile_value();
     this.#coordinates = coordinates;
   }
 
   double() {
-    const new_value = this.#value * 2;
-
-    if (new_value > 2048) {
-      console.error('Tile value cannot be greater than 2048');
-      return;
-    }
-    this.#value = new_value as T_TileValue;
+    this.#value *= 2;
   }
 
   merge(tile: Tile) {
@@ -41,7 +34,7 @@ export class Tile {
 
   get id() {
     return this.#id;
-  } 
+  }
 
   get coords() {
     return this.#coordinates;
