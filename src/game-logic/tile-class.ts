@@ -32,6 +32,10 @@ export class Tile {
     this.mergedInTile = tile;
   }
 
+  clearMergedTile() {
+    this.mergedInTile = null;
+  }
+
   get id() {
     return this.#id;
   }
@@ -42,6 +46,10 @@ export class Tile {
 
   set coords(coordinates: T_TileCoords) {
     this.#coordinates = coordinates;
+
+    if (this.mergedInTile) {
+      this.mergedInTile.coords = coordinates;
+    }
   }
 
   get value() {

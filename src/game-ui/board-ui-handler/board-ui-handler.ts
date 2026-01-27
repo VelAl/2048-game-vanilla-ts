@@ -22,10 +22,12 @@ export class BoardUiHandler {
   }
 
   /**
-   * Places tiles on the board if they're not already there, or updates their styles if they are.
+   * Places new tiles on the board, updates the styles of existing tiles, removes the merged tiles UI.
    * @param tiles - an array of `Tile` objects to add or update on the board
    */
-  setTilesOnBoard(tiles: Tile[]) {
+  setTilesUi(tiles: Tile[]) {
+    this.#clearMergedTilesUi(tiles);
+
     tiles.forEach((tile) => {
       const htmlTileElement = this.#htmlTiles.get(tile.id);
 
@@ -37,8 +39,16 @@ export class BoardUiHandler {
     });
   }
 
-  removeTilesFromBoard(tiles: Tile[]) {
-    tiles.forEach((tile) => {
+  #clearMergedTilesUi(tiles: Tile[]) {
+    const tilesToRemove = tiles.reduce((akk, tile) => {
+      if (tile.mergedInTile) {
+        akk.push(tile.mergedInTile);
+      }
+
+      return akk;
+    }, [] as Tile[]);
+
+    tilesToRemove.forEach((tile) => {
       const tileElement = this.#htmlTiles.get(tile.id)!;
 
       this.#htmlTiles.delete(tile.id);

@@ -6,7 +6,8 @@ export const getTileComputedStyles = (tile: Tile) => {
   const left = `${(tile.coords.x * 100) / BOARD_SIZE}%`;
   const width = `${100 / BOARD_SIZE}%`;
 
-  const { backgroundColor, color } = tileColors[tile.value];
+  const { backgroundColor, color } =
+    tileColors[tile.value as keyof typeof tileColors] || tileColors[2048];
 
   return {
     top,

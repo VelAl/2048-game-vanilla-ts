@@ -18,24 +18,21 @@ const initGame = () => {
   const game = new Game2048State(lsGameStateManager.savedState);
 
   scoreUiHandler.setUiScores(game.gameState);
-  boardUiHandler.setTilesOnBoard(game.tiles);
+  boardUiHandler.setTilesUi(game.tiles);
   bannerUiHandler.updateBanner(game.gameState.status);
 
   const moveHandler = ({ key }: KeyboardEvent) => {
     if (!isArrowBtnKey(key)) return;
 
-    const result = game.make_move(key);
+    const isMoveMade = game.make_move(key);
 
-    if (!result) return;
+    if (!isMoveMade) return;
 
     lsGameStateManager.saveState(game.gameState);
     scoreUiHandler.setUiScores(game.gameState);
     bannerUiHandler.updateBanner(game.gameState.status);
 
-    const { tilesToRemove } = result;
-
-    boardUiHandler.removeTilesFromBoard(tilesToRemove);
-    boardUiHandler.setTilesOnBoard(game.tiles);
+    boardUiHandler.setTilesUi(game.tiles);
   };
 
   const throttledMoveHandler = throttle(moveHandler, MOVEMENT_DURATION);
@@ -47,7 +44,7 @@ const initGame = () => {
     lsGameStateManager.saveState(game.gameState);
     bannerUiHandler.updateBanner(game.gameState.status);
     boardUiHandler.clearBoard();
-    boardUiHandler.setTilesOnBoard(game.tiles);
+    boardUiHandler.setTilesUi(game.tiles);
     scoreUiHandler.setUiScores(game.gameState);
   };
 

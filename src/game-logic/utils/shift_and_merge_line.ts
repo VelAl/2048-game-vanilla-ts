@@ -5,12 +5,10 @@ type T_ShiftAndMergeLine = (cellsLine: T_BoardLine) => {
   newLine: T_BoardLine;
   isShiftedOrMerged: boolean;
   scoreIncrement: number;
-  tilesToRemove: Tile[];
 };
 
 export const shift_and_merge_line: T_ShiftAndMergeLine = (cellsLine) => {
   let scoreIncrement = 0;
-  const tilesToRemove: Tile[] = [];
 
   // shift line deleting null cells_______________________________
   const lineTiles = cellsLine.filter((cell) => !!cell);
@@ -20,7 +18,6 @@ export const shift_and_merge_line: T_ShiftAndMergeLine = (cellsLine) => {
       newLine: cellsLine,
       isShiftedOrMerged: false,
       scoreIncrement,
-      tilesToRemove,
     };
   }
 
@@ -35,12 +32,13 @@ export const shift_and_merge_line: T_ShiftAndMergeLine = (cellsLine) => {
 
     if (should_merge) {
       isMerged = true;
+      const tileToRemove = akk.at(-1)!;
+
       tile.double();
+      tileToRemove.double();
       scoreIncrement += tile.value;
 
-      const tileToRemove = akk.at(-1)!;
-      tileToRemove.merge(tile);
-      tilesToRemove.push(tileToRemove);
+      tile.merge(tileToRemove);
 
       akk[akk.length - 1] = tile;
       skipNext = true;
@@ -60,6 +58,5 @@ export const shift_and_merge_line: T_ShiftAndMergeLine = (cellsLine) => {
     newLine: mergedLine,
     isShiftedOrMerged: isShifted || isMerged,
     scoreIncrement,
-    tilesToRemove,
   };
 };

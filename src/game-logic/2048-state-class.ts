@@ -1,4 +1,4 @@
-import { gameStatus } from '../constants';
+import { directions, gameStatus } from '../constants';
 import {
   type T_GameStatus,
   type T_GameBoard,
@@ -68,29 +68,30 @@ export class Game2048State {
   /**
    * Makes a move in the specified direction.
    * @param direction - The direction to move in. Type: `T_Direction`.
-   * @returns An object containing an array of tiles to remove (which may be empty)
-   *  if a move has occurred (i.e. tiles were shifted or merged),
-   *  or `undefined` if no move was made.
+   * @returns `true` if a move has occurred (any tile was shifted or merged), `false` otherwise.
    */
-  make_move(direction: T_Direction): { tilesToRemove: Tile[] } | undefined {
+  make_move(direction: T_Direction): boolean {
+    if (!Object.values(directions).includes(direction)) {
+      console.error('Invalid direction provided in "make_move" method');
+      return false;
+    }
+
+    this.#clearMergedTiles();
+
     const lines_with_indexes = get_line_indexes_by_direction(direction);
 
     let anyTileMoved = false;
-
-    const tilesToRemoveAcc: Tile[] = [];
 
     lines_with_indexes.forEach((line) => {
       // get board line depending on the direction____________________
       const boardLine = line.map(([y, x]) => this.#board[y][x]);
 
-      const { isShiftedOrMerged, newLine, scoreIncrement, tilesToRemove } =
+      const { isShiftedOrMerged, newLine, scoreIncrement } =
         shift_and_merge_line(boardLine);
 
       if (isShiftedOrMerged) {
         anyTileMoved = true;
         this.#addScore(scoreIncrement);
-
-        tilesToRemove.forEach((tile) => tilesToRemoveAcc.push(tile));
 
         // set the board line with the new values_____________________
         line.forEach(([y, x], i) => {
@@ -105,13 +106,12 @@ export class Game2048State {
 
     if (anyTileMoved) {
       this.#set_new_tile();
-
       this.#check_status();
 
-      return {
-        tilesToRemove: tilesToRemoveAcc,
-      };
+      return true;
     }
+
+    return false;
   }
 
   #check_status() {
@@ -138,6 +138,18 @@ export class Game2048State {
     if (this.#score > this.#bestScore) {
       this.#bestScore = this.#score;
     }
+  }
+
+  /**
+   * Clears the merged tile property of all tiles on the board.
+   * Applied before each move to prevent tiles from being merged multiple times.
+   */
+  #clearMergedTiles() {
+    this.#board.flat().forEach((tile) => {
+      if (tile?.mergedInTile) {
+        tile.clearMergedTile();
+      }
+    });
   }
 
   get gameState() {
