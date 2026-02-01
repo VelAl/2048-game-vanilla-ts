@@ -1,3 +1,4 @@
+import { BOARD_SIZE } from '../../constants';
 import type { T_GameBoard, T_LS_State, T_SavedBoard } from '../../types';
 
 export const validate_saved_state = (
@@ -12,13 +13,16 @@ export const validate_saved_state = (
 
   if (!Array.isArray(state.board)) return false;
 
-  state.board.forEach((row) => {
+  for (const row of state.board) {
     if (!Array.isArray(row)) return false;
 
-    row.forEach((cell) => {
+    for (const cell of row) {
       if (typeof cell !== 'number' && cell !== null) return false;
-    });
-  });
+    }
+  }
+
+  if (state.board.length !== BOARD_SIZE) return false;
+  if (state.board.some((row) => row.length !== BOARD_SIZE)) return false;
 
   return true;
 };

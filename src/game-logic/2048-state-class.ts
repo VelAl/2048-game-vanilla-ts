@@ -124,6 +124,8 @@ export class Game2048State {
       this.#status = gameStatus.LOST;
       return;
     }
+
+    this.#status = gameStatus.PLAYING;
   }
 
   get #is_any_move_possible() {

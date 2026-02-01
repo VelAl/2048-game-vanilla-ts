@@ -23,12 +23,10 @@ export const shift_and_merge_line: T_ShiftAndMergeLine = (cellsLine) => {
 
   const isShifted = cellsLine.some((cell, i) => !cell && cellsLine[i + 1]);
 
-  // merge tiles if they have the same value______________________
-  let skipNext = false; // tiles can be merged only once per move_
-
   let isMerged = false;
   const mergedLine: T_BoardLine = lineTiles.reduce((akk, tile) => {
-    const should_merge = tile.value === akk.at(-1)?.value && !skipNext;
+    const should_merge =
+      tile.value === akk.at(-1)?.value && !akk.at(-1)?.mergedInTile;
 
     if (should_merge) {
       isMerged = true;
@@ -41,10 +39,8 @@ export const shift_and_merge_line: T_ShiftAndMergeLine = (cellsLine) => {
       tile.merge(tileToRemove);
 
       akk[akk.length - 1] = tile;
-      skipNext = true;
     } else {
       akk.push(tile);
-      skipNext = false;
     }
     return akk;
   }, [] as Tile[]);
