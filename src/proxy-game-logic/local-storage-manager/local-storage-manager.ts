@@ -1,5 +1,5 @@
-import { LS_KEY_GAME_STATE } from '../constants';
-import type { T_GameBoard, T_LS_State } from '../types';
+import { LS_KEY_GAME_STATE } from '../../constants';
+import type { T_GameBoard, T_LS_State } from '../../types';
 import { convert_game_board_to_ls_board, validate_saved_state } from './utils';
 
 export class LS_GameStateManager {

@@ -1,55 +1,40 @@
-import { MOVEMENT_DURATION } from './constants';
-import { Game2048State } from './game-logic';
-import {
-  isArrowBtnKey,
-  BannerUiHandler,
-  ScoreUiHandler,
-  BoardUiHandler,
-  throttle,
-} from './game-ui';
-import { LS_GameStateManager } from './local-storage-manager';
+import { BannerUiHandler, ScoreUiHandler, BoardUiHandler } from './game-ui';
+import { GameLogicProxy } from './proxy-game-logic';
 
 const initGame = () => {
   const bannerUiHandler = new BannerUiHandler();
   const scoreUiHandler = new ScoreUiHandler();
   const boardUiHandler = new BoardUiHandler();
 
-  const lsGameStateManager = new LS_GameStateManager();
-  const game = new Game2048State(lsGameStateManager.savedState);
+  const game = new GameLogicProxy();
 
   scoreUiHandler.setUiScores(game.gameState);
   boardUiHandler.setTilesUi(game.tiles);
   bannerUiHandler.updateBanner(game.gameState.status);
 
-  const moveHandler = ({ key }: KeyboardEvent) => {
-    if (!isArrowBtnKey(key)) return;
-
-    const isMoveMade = game.make_move(key);
+  const _moveHandler = (e: KeyboardEvent) => {
+    const isMoveMade = game.handleKeyDown(e);
 
     if (!isMoveMade) return;
 
-    lsGameStateManager.saveState(game.gameState);
     scoreUiHandler.setUiScores(game.gameState);
     bannerUiHandler.updateBanner(game.gameState.status);
-
     boardUiHandler.setTilesUi(game.tiles);
   };
 
-  const throttledMoveHandler = throttle(moveHandler, MOVEMENT_DURATION);
-
-  document.addEventListener('keydown', throttledMoveHandler);
-
-  const restartGame = () => {
+  const _restartGame = () => {
     game.startNewGame();
-    lsGameStateManager.saveState(game.gameState);
+
     bannerUiHandler.updateBanner(game.gameState.status);
     boardUiHandler.clearBoard();
     boardUiHandler.setTilesUi(game.tiles);
     scoreUiHandler.setUiScores(game.gameState);
   };
 
+  document.addEventListener('keydown', _moveHandler);
+
   const startBtn = document.getElementById('restart-button')!;
-  startBtn.addEventListener('click', restartGame);
+  startBtn.addEventListener('click', _restartGame);
 };
 
 initGame();

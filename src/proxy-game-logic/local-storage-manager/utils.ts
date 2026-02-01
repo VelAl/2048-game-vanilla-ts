@@ -1,4 +1,4 @@
-import type { T_GameBoard, T_LS_State, T_SavedBoard } from '../types';
+import type { T_GameBoard, T_LS_State, T_SavedBoard } from '../../types';
 
 export const validate_saved_state = (
   savedState: unknown

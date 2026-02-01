@@ -1,0 +1,1 @@
+export { GameLogicProxy } from './proxy';
