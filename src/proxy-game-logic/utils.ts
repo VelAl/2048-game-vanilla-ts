@@ -19,4 +19,4 @@ export const throttle = <T, K>(func: (...args: T[]) => K, delay: number) => {
 };
 
 export const WARN_DIRECT_MAKE_MOVE =
-  '"makeMove" method should not be used directly on the proxy class. Use "handleKeyDown" instead.';
+  '"make_move" method should not be used directly on the proxy class. Use "handleKeyDown" instead.';

@@ -8,27 +8,28 @@ const initGame = () => {
 
   const game = new GameLogicProxy();
 
-  scoreUiHandler.setUiScores(game.gameState);
-  boardUiHandler.setTilesUi(game.tiles);
-  bannerUiHandler.updateBanner(game.gameState.status);
+  const _updateUi = () => {
+    scoreUiHandler.setUiScores(game.gameState);
+    bannerUiHandler.updateBanner(game.gameState.status);
+    boardUiHandler.setTilesUi(game.tiles);
+  };
+
+  _updateUi();
 
   const _moveHandler = (e: KeyboardEvent) => {
     const isMoveMade = game.handleKeyDown(e);
 
     if (!isMoveMade) return;
 
-    scoreUiHandler.setUiScores(game.gameState);
-    bannerUiHandler.updateBanner(game.gameState.status);
-    boardUiHandler.setTilesUi(game.tiles);
+    _updateUi();
   };
 
   const _restartGame = () => {
     game.startNewGame();
 
-    bannerUiHandler.updateBanner(game.gameState.status);
     boardUiHandler.clearBoard();
-    boardUiHandler.setTilesUi(game.tiles);
-    scoreUiHandler.setUiScores(game.gameState);
+
+    _updateUi();
   };
 
   document.addEventListener('keydown', _moveHandler);

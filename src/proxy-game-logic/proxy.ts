@@ -2,6 +2,7 @@ import { MOVEMENT_DURATION } from '../constants';
 import { Game2048State } from '../game-logic';
 import { isArrowBtnKey, WARN_DIRECT_MAKE_MOVE } from './utils';
 import { LS_GameStateManager } from './local-storage-manager';
+import type { T_Direction } from '../types';
 
 let instance: GameLogicProxy | null = null;
 
@@ -12,7 +13,7 @@ let instance: GameLogicProxy | null = null;
  * - Persists game state to LocalStorage automatically after each move.
  * - Handles keyboard input, accepting only arrow keys.
  * - Locks move execution while tile movement animations are in progress.
- * - Prevents direct calls to `makeMove()`; moves should go through `handleKeyDown`.
+ * - Prevents direct calls to `make_move()`; moves should go through `handleKeyDown`.
  */
 export class GameLogicProxy extends Game2048State {
   private LS_state_manager: LS_GameStateManager | null = null;
@@ -48,11 +49,17 @@ export class GameLogicProxy extends Game2048State {
   }
 
   public startNewGame(): void {
+    if (this.moveTimeout) {
+      clearTimeout(this.moveTimeout);
+      this.moveTimeout = null;
+    }
+
     super.startNewGame();
     this.LS_state_manager!.saveState(this.gameState);
   }
 
-  public makeMove() {
+  public make_move(_: T_Direction): boolean {
     console.error(WARN_DIRECT_MAKE_MOVE);
+    return false;
   }
 }
