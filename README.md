@@ -21,7 +21,6 @@ Built for fun: a classic 2048 puzzle that runs in the browser with a vanilla Typ
 ![2048 win](public/2048_game_win_screenshot.png)
 ![2048 game over](public/2048_game_over_screenshot.png)
 
-## Tasks to implement
+## Approach & structure
 
-- [ ] Set responsive CSS to match the user system theme
-- [ ] Set tests
+The code is organized in an OOP style. All game state and move logic live in `game-logic`; the display side (banner, score, board) is handled in `game-ui`. The `proxy-game-logic` layer wraps the core: a single game instance, keyboard input, and saving progress to localStorage or sessionStorage. The entry point is `main.ts` — it sets up the proxy and UI handlers and refreshes the interface after each action.
