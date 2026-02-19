@@ -1,19 +1,22 @@
-import { LS_KEY_GAME_STATE } from '../../constants';
+import { SS_KEY_GAME_STATE } from '../../constants';
 import type {
   T_GameBoard,
   T_PersistedState,
   T_PersistStateManager,
 } from '../../types';
-import { board_to_saved, validate_saved_state } from '../utils';
+import {
+  board_to_saved,
+  validate_saved_state,
+} from '../utils';
 
-export class LS_GameStateManager implements T_PersistStateManager {
+export class SS_GameStateManager implements T_PersistStateManager {
   /**
-   * Saves the game state to localStorage
+   * Saves the game state to sessionStorage
    * @param state - The game state to save
    */
   saveState(state: { board: T_GameBoard; score: number; bestScore: number }) {
-    localStorage.setItem(
-      LS_KEY_GAME_STATE,
+    sessionStorage.setItem(
+      SS_KEY_GAME_STATE,
       JSON.stringify({
         board: board_to_saved(state.board),
         score: state.score,
@@ -26,7 +29,7 @@ export class LS_GameStateManager implements T_PersistStateManager {
     let savedState: T_PersistedState | undefined;
 
     try {
-      const savedStateString = localStorage.getItem(LS_KEY_GAME_STATE);
+      const savedStateString = sessionStorage.getItem(SS_KEY_GAME_STATE);
 
       if (savedStateString) {
         const parsedState = JSON.parse(savedStateString);
@@ -37,7 +40,7 @@ export class LS_GameStateManager implements T_PersistStateManager {
       }
     } catch (error) {
       console.error(
-        'Error managing 2048 game saved state in localStorage:',
+        'Error managing 2048 game saved state in sessionStorage:',
         error
       );
     } finally {

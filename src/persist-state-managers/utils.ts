@@ -1,5 +1,5 @@
-import { BOARD_SIZE } from '../../constants';
-import type { T_GameBoard, T_PersistedState, T_SavedBoard } from '../../types';
+import { BOARD_SIZE } from '../constants';
+import type { T_GameBoard, T_PersistedState, T_SavedBoard } from '../types';
 
 export const validate_saved_state = (
   savedState: unknown
@@ -27,9 +27,7 @@ export const validate_saved_state = (
   return true;
 };
 
-/**
- * Converts a game board T_GameBoard to a T_SavedBoard for localStorage
- */
-export const convert_game_board_to_ls_board = (
+/** T_GameBoard → T_SavedBoard for persistence */
+export const board_to_saved = (
   board: T_GameBoard
 ): T_SavedBoard => board.map((row) => row.map((cell) => cell?.value || null));

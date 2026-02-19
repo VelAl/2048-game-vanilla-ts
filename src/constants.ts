@@ -34,3 +34,4 @@ export const tileColors = {
 } as const;
 
 export const LS_KEY_GAME_STATE = '2048-classic-game-state';
+export const SS_KEY_GAME_STATE = '2048-classic-game-state';
