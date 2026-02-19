@@ -4,6 +4,7 @@ import { directions } from '../constants';
 export const isArrowBtnKey = (key: string): key is T_Direction =>
   Object.values(directions).includes(key as T_Direction);
 
+/*
 export const throttle = <T, K>(func: (...args: T[]) => K, delay: number) => {
   let timeout: ReturnType<typeof setTimeout> | null = null;
 
@@ -17,6 +18,7 @@ export const throttle = <T, K>(func: (...args: T[]) => K, delay: number) => {
     return func(...args);
   };
 };
+*/
 
 export const WARN_DIRECT_MAKE_MOVE =
   '"make_move" method should not be used directly on the proxy class. Use "handleKeyDown" instead.';

@@ -3,7 +3,7 @@ import {
   type T_GameStatus,
   type T_GameBoard,
   type T_Direction,
-  type T_LS_State,
+  type T_PersistedState,
 } from '../types';
 import { Tile } from './tile-class';
 import {
@@ -22,7 +22,7 @@ export class Game2048State {
   #score: number = 0;
   #bestScore: number = 0;
 
-  constructor(initialState?: T_LS_State) {
+  constructor(initialState?: T_PersistedState) {
     this.#board = generate_empty_board();
 
     if (initialState) {

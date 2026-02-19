@@ -1,8 +1,7 @@
 import { MOVEMENT_DURATION } from '../constants';
 import { Game2048State } from '../game-logic';
 import { isArrowBtnKey, WARN_DIRECT_MAKE_MOVE } from './utils';
-import { LS_GameStateManager } from './local-storage-manager';
-import type { T_Direction } from '../types';
+import type { T_Direction, T_PersistStateManager } from '../types';
 
 let instance: GameLogicProxy | null = null;
 
@@ -10,22 +9,20 @@ let instance: GameLogicProxy | null = null;
  * GameLogicProxy wraps Game2048State to provide enhanced functionality:
  *
  * - Implements the Singleton pattern to ensure only one game instance exists.
- * - Persists game state to LocalStorage automatically after each move.
+ * - Uses a persist state manager to persist game state automatically after each move.
  * - Handles keyboard input, accepting only arrow keys.
  * - Locks move execution while tile movement animations are in progress.
  * - Prevents direct calls to `make_move()`; moves should go through `handleKeyDown`.
  */
 export class GameLogicProxy extends Game2048State {
-  private LS_state_manager: LS_GameStateManager | null = null;
+  private persistStateManager!: T_PersistStateManager;
   private moveTimeout: ReturnType<typeof setTimeout> | null = null;
 
-  constructor() {
+  constructor(persistStateManager: T_PersistStateManager) {
     if (instance) return instance;
 
-    const LS_state_manager = new LS_GameStateManager();
-    super(LS_state_manager.savedState);
-    this.LS_state_manager = LS_state_manager;
-
+    super(persistStateManager.getSavedState());
+    this.persistStateManager = persistStateManager;
     instance = this;
   }
 
@@ -42,7 +39,7 @@ export class GameLogicProxy extends Game2048State {
         this.moveTimeout = null;
       }, MOVEMENT_DURATION);
 
-      this.LS_state_manager!.saveState(this.gameState);
+      this.persistStateManager.saveState(this.gameState);
 
       return true;
     }
@@ -55,7 +52,7 @@ export class GameLogicProxy extends Game2048State {
     }
 
     super.startNewGame();
-    this.LS_state_manager!.saveState(this.gameState);
+    this.persistStateManager.saveState(this.gameState);
   }
 
   public make_move(_: T_Direction): boolean {

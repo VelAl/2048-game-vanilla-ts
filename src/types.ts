@@ -16,8 +16,19 @@ export type T_GameBoard = T_BoardLine[];
 
 export type T_SavedBoard = (null | Tile['value'])[][];
 
-export type T_LS_State = {
+type T_StateToPersist = {
+  score: number;
+  bestScore: number;
+  board: T_GameBoard;
+};
+
+export type T_PersistedState = {
   score: number;
   bestScore: number;
   board: T_SavedBoard;
+};
+
+export type T_PersistStateManager = {
+  saveState: (state: T_StateToPersist) => void;
+  getSavedState: () => T_PersistedState | undefined;
 };

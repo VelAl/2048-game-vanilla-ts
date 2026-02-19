@@ -1,12 +1,12 @@
 import { BannerUiHandler, ScoreUiHandler, BoardUiHandler } from './game-ui';
-import { GameLogicProxy } from './proxy-game-logic';
+import createGame from './proxy-game-logic';
 
 const initGame = () => {
   const bannerUiHandler = new BannerUiHandler();
   const scoreUiHandler = new ScoreUiHandler();
   const boardUiHandler = new BoardUiHandler();
 
-  const game = new GameLogicProxy();
+  const game = createGame();
 
   const _updateUi = () => {
     scoreUiHandler.setUiScores(game.gameState);

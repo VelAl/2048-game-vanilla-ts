@@ -1,12 +1,12 @@
 import { BOARD_SIZE } from '../../constants';
-import type { T_GameBoard, T_LS_State, T_SavedBoard } from '../../types';
+import type { T_GameBoard, T_PersistedState, T_SavedBoard } from '../../types';
 
 export const validate_saved_state = (
   savedState: unknown
-): savedState is T_LS_State => {
+): savedState is T_PersistedState => {
   if (!savedState || typeof savedState !== 'object') return false;
 
-  const state = savedState as T_LS_State;
+  const state = savedState as T_PersistedState;
 
   if (typeof state.score !== 'number' || typeof state.bestScore !== 'number')
     return false;

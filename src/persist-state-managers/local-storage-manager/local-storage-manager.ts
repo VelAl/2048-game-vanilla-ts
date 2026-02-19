@@ -1,8 +1,12 @@
 import { LS_KEY_GAME_STATE } from '../../constants';
-import type { T_GameBoard, T_LS_State } from '../../types';
+import type {
+  T_GameBoard,
+  T_PersistedState,
+  T_PersistStateManager,
+} from '../../types';
 import { convert_game_board_to_ls_board, validate_saved_state } from './utils';
 
-export class LS_GameStateManager {
+export class LS_GameStateManager implements T_PersistStateManager {
   /**
    * Saves the game state to localStorage
    * @param state - The game state to save
@@ -18,8 +22,8 @@ export class LS_GameStateManager {
     );
   }
 
-  get savedState(): T_LS_State | undefined {
-    let savedState: T_LS_State | undefined;
+  getSavedState(): T_PersistedState | undefined {
+    let savedState: T_PersistedState | undefined;
 
     try {
       const savedStateString = localStorage.getItem(LS_KEY_GAME_STATE);
